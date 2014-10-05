@@ -37,7 +37,7 @@ func main() {
 	conf := loadConfigFile(configFile)
 
 	// Launch the bot
-	fmt.Println("Starting", Name, "Bot...")
+	fmt.Println("Starting", Name)
 	bot.Create(conf).Start()
 }
 
@@ -63,6 +63,7 @@ func require(err error) bool {
 func loadConfigFile(path string) (conf *config.Config) {
 	// Try opening the configuration file first so we can check if it exists
 	file, err := os.Open(path)
+
 	if os.IsNotExist(err) {
 		// Create a new configuration file
 		file, err = os.Create(path); require(err)
