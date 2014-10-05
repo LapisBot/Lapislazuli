@@ -17,8 +17,7 @@ func main() {
 
 		// Print defaults
 		flag.CommandLine.VisitAll(func(f *flag.Flag) {
-			format := "  -%s | %s - (%s)\n"
-			fmt.Fprintf(os.Stderr, format, f.Name, f.Usage, f.DefValue)
+			fmt.Fprintf(os.Stderr, "  -%s | %s - (%s)\n", f.Name, f.Usage, f.DefValue)
 		})
 	}
 
@@ -38,7 +37,7 @@ func main() {
 	conf := loadConfigFile(configFile)
 
 	// Launch the bot
-	fmt.Printf("Starting %s Bot...\n", Name)
+	fmt.Println("Starting", Name, "Bot...")
 	bot.Create(conf).Start()
 }
 
