@@ -26,7 +26,8 @@ func main() {
 	dir, err := os.Getwd(); assert(err)
 	flag.StringVar(&dir, "dir", dir, "Set the folder for all the Bot files")
 
-	configFile := *flag.String("config", "config.json", "The file to load the configuration from")
+	configFile := "config.json"
+	flag.StringVar(&configFile, "config", configFile, "The file to load the configuration from")
 
 	// Parse the flags given when running the application
 	flag.Parse()
