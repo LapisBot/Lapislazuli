@@ -51,12 +51,11 @@ func assert(err error) {
 
 // This method will exist the program if an error occurs and print the error message. Unlike assert() this
 // is not that bad and won't panic the complete program.
-func require(err error) bool {
+func require(err error) {
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(2)
 	}
-	return true
 }
 
 // Loads the configuration file from the specified file or creates a new empty one if it doesn't exist.
