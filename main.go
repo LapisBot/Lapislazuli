@@ -2,14 +2,13 @@ package main
 
 import (
 	"flag"
-	"os"
 	"fmt"
-	"path/filepath"
 	"github.com/LapisBot/Lapislazuli/bot"
 	"github.com/LapisBot/Lapislazuli/config"
+	"os"
+	"os/signal"
+	"path/filepath"
 )
-
-const Name = "Lapislazuli v0.1dev"
 
 func main() {
 	flag.Usage = func() {
@@ -22,7 +21,8 @@ func main() {
 	}
 
 	// The folder to save the Bot files in
-	dir, err := os.Getwd(); assert(err)
+	dir, err := os.Getwd()
+	assert(err)
 	flag.StringVar(&dir, "dir", dir, "Set the folder for all the Bot files")
 
 	configFile := "config.json"
@@ -37,8 +37,13 @@ func main() {
 	conf := loadConfigFile(configFile)
 
 	// Launch the bot
-	fmt.Println("Starting", Name)
-	bot.Create(conf).Start()
+	me := bot.Create(conf)
+
+	// Make sure to shutdown gracefully if the program exists
+	handleInterrupt(me.Stop)
+
+	// Start the bot
+	me.Start()
 }
 
 // This method should always complete successfully. If it doesn't, then something is really wrong and we
@@ -65,12 +70,17 @@ func loadConfigFile(path string) (conf *config.Config) {
 
 	if os.IsNotExist(err) {
 		// Create a new configuration file
-		file, err = os.Create(path); require(err)
+		file, err = os.Create(path)
+		require(err)
 		defer file.Close()
 
 		// Default values
 		conf = config.New()
-		conf.Servers["irc.example.com:+6697"] = config.NewServer()
+
+		server := config.NewServer()
+		server.Connection.Address = "irc.example.com:6697"
+		server.Connection.SSL = true
+		conf.Servers = append(conf.Servers, server)
 
 		// Write the default configuration to the file
 		require(config.Write(file, conf))
@@ -79,8 +89,19 @@ func loadConfigFile(path string) (conf *config.Config) {
 		defer file.Close()
 
 		// Read the configuration from the file
-		conf, err = config.Read(file); require(err)
+		conf, err = config.Read(file)
+		require(err)
 	}
 
 	return
+}
+
+func handleInterrupt(handler func()) {
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	go func() {
+		<-c
+		handler()
+		os.Exit(-1)
+	}()
 }

@@ -3,12 +3,12 @@ package config
 import "encoding/json"
 
 type Config struct {
-	Servers map[string]*Server `json:"servers"`
+	Servers []*Server `json:"servers"`
 }
 
 func New() *Config {
-	return &Config {
-		make(map[string]*Server),
+	return &Config{
+		make([]*Server, 0),
 	}
 }
 

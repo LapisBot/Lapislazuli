@@ -1,14 +1,22 @@
 package config
 
 type Server struct {
-	Login *Login `json:"login"`
-	Nick *Nickname `json:"nick"`
-	Messages *Messages `json:"messages"`
+	Connection *Connection `json:"connection"`
+	Login      *Login      `json:"login"`
+	Messages   *Messages   `json:"messages"`
+}
+
+type Connection struct {
+	Address     string `json:"address"`
+	SSL         bool   `json:"ssl"`
+	Certificate bool   `json:"certificate"`
 }
 
 type Login struct {
-	User     string `json:"user"`
-	Password string `json:"password"`
+	User     string    `json:"user"`
+	Password string    `json:"password"`
+	Name     string    `json:"name"`
+	Ident    string    `json:"ident"s`
 	NickServ *NickServ `json:"nickserv"`
 }
 
@@ -17,22 +25,20 @@ type NickServ struct {
 	Password string `json:"password"`
 }
 
-type Nickname struct {
-	Name     string `json:"name"`
-	Realname string `json:"realname"`
-}
-
 type Messages struct {
 	Version string `json:"version"`
 	Quit    string `json:"quit"`
 }
 
 func NewServer() *Server {
-	return &Server {
-		&Login {
+	return &Server{
+		&Connection{
+			SSL:         false,
+			Certificate: true,
+		},
+		&Login{
 			NickServ: &NickServ{},
 		},
-		&Nickname {},
-		&Messages {},
+		&Messages{},
 	}
 }
