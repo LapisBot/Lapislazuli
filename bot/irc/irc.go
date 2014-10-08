@@ -8,8 +8,8 @@ import (
 	"github.com/fluffle/goirc/logging"
 )
 
-type IRCBot struct {
-	Conn *client.Conn
+type Bot struct {
+	conn *client.Conn
 	quit chan struct{}
 }
 
@@ -17,7 +17,7 @@ func init() {
 	logging.SetLogger(&ircLogger{})
 }
 
-func Create(server *config.Server) (bot *IRCBot) {
+func Create(server *config.Server) (bot *Bot) {
 	nick := server.Login.User
 	if nick == "" {
 		nick = "Lapislazuli"
@@ -25,7 +25,6 @@ func Create(server *config.Server) (bot *IRCBot) {
 	}
 
 	conf := client.NewConfig(nick, server.Login.Ident, server.Login.Name)
-	conf.PingFreq = 0
 	conf.Version = server.Messages.Version
 	conf.QuitMessage = server.Messages.Quit
 
@@ -38,27 +37,27 @@ func Create(server *config.Server) (bot *IRCBot) {
 	}
 
 	conn := client.Client(conf)
-	bot = &IRCBot{Conn: conn}
+	bot = &Bot{conn: conn}
 	conn.HandleFunc("connected", bot.connected)
 	conn.HandleFunc("disconnected", bot.disconnected)
 	return
 }
 
-func (irc *IRCBot) Connect() {
+func (irc *Bot) Connect() {
 	irc.quit = make(chan struct{})
-	irc.Conn.Connect()
+	irc.conn.Connect()
 	<-irc.quit
 }
 
-func (irc *IRCBot) Disconnect() {
-	irc.Conn.Quit()
+func (irc *Bot) Disconnect() {
+	irc.conn.Quit()
 	<-irc.quit
 }
 
-func (irc *IRCBot) connected(conn *client.Conn, line *client.Line) {
+func (irc *Bot) connected(conn *client.Conn, _ *client.Line) {
 	conn.Join("#lapislazuli") // TODO
 }
 
-func (irc *IRCBot) disconnected(conn *client.Conn, line *client.Line) {
+func (irc *Bot) disconnected(_ *client.Conn, _ *client.Line) {
 	close(irc.quit)
 }

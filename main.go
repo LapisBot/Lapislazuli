@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"github.com/LapisBot/Lapislazuli/bot"
@@ -44,6 +45,17 @@ func main() {
 
 	// Start the bot
 	me.Start()
+	defer me.Stop()
+
+	reader := bufio.NewReader(os.Stdin)
+	for {
+		line, err := reader.ReadString('\n')
+		if err != nil {
+			break
+		}
+		line = line[:len(line)-1]
+		fmt.Println(line)
+	}
 }
 
 // This method should always complete successfully. If it doesn't, then something is really wrong and we
