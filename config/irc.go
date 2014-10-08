@@ -16,7 +16,7 @@ type Login struct {
 	User     string    `json:"user"`
 	Password string    `json:"password"`
 	Name     string    `json:"name"`
-	Ident    string    `json:"ident"s`
+	Ident    string    `json:"ident"`
 	NickServ *NickServ `json:"nickserv"`
 }
 
