@@ -4,6 +4,7 @@ import (
 	"github.com/LapisBot/Lapislazuli/bot/irc"
 	"github.com/LapisBot/Lapislazuli/bot/log"
 	"github.com/LapisBot/Lapislazuli/config"
+	"sync"
 )
 
 const Name = "Lapislazuli v0.1dev"
@@ -31,7 +32,15 @@ func (bot *Bot) Start() {
 }
 
 func (bot *Bot) Stop() {
+	var wg sync.WaitGroup
+	wg.Add(len(bot.irc))
+
 	for _, ircbot := range bot.irc {
-		ircbot.Disconnect()
+		go func() {
+			ircbot.Disconnect()
+			wg.Done()
+		}()
 	}
+
+	wg.Wait()
 }
