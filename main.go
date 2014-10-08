@@ -92,7 +92,7 @@ func loadConfigFile(path string) (conf *config.Config) {
 		server := config.NewServer()
 		server.Connection.Address = "irc.example.com:6697"
 		server.Connection.SSL = true
-		conf.Servers = append(conf.Servers, server)
+		conf.Servers["example"] = server
 
 		// Write the default configuration to the file
 		require(config.Write(file, conf))

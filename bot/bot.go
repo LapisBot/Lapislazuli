@@ -11,7 +11,7 @@ const Name = "Lapislazuli v0.1dev"
 
 type Bot struct {
 	Config *config.Config
-	irc    map[*config.Server]*irc.Bot
+	irc    map[string]*irc.Bot
 }
 
 func Create(config *config.Config) *Bot {
@@ -23,10 +23,10 @@ func Create(config *config.Config) *Bot {
 func (bot *Bot) Start() {
 	log.Info("Starting Bot:", Name)
 
-	bot.irc = make(map[*config.Server]*irc.Bot)
-	for _, server := range bot.Config.Servers {
+	bot.irc = make(map[string]*irc.Bot)
+	for name, server := range bot.Config.Servers {
 		ircbot := irc.Create(server)
-		bot.irc[server] = ircbot
+		bot.irc[name] = ircbot
 		go ircbot.Connect()
 	}
 }
