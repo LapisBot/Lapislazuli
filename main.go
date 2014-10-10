@@ -97,6 +97,8 @@ func loadConfigFile(path string) (conf *config.Config) {
 		server.Connection.SSL = true
 		conf.Servers["example"] = server
 
+		conf.Channels["example:#example"] = config.NewChannel()
+
 		// Write the default configuration to the file
 		require(config.Write(file, conf))
 
