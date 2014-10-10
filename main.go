@@ -36,6 +36,9 @@ func main() {
 	configFile = filepath.Join(dir, configFile)
 	fmt.Println("Loading configuration from", configFile)
 	conf := loadConfigFile(configFile)
+	if conf == nil {
+		os.Exit(0)
+	}
 
 	// Launch the bot
 	me := bot.Create(conf)
@@ -96,6 +99,8 @@ func loadConfigFile(path string) (conf *config.Config) {
 
 		// Write the default configuration to the file
 		require(config.Write(file, conf))
+
+		return nil
 	} else {
 		require(err)
 		defer file.Close()
