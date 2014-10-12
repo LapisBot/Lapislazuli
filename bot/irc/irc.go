@@ -10,8 +10,8 @@ import (
 
 type Bot struct {
 	Config *config.Server
-	conn *client.Conn
-	quit chan struct{}
+	conn   *client.Conn
+	quit   chan struct{}
 }
 
 func init() {
@@ -40,7 +40,7 @@ func Create(server *config.Server) (bot *Bot) {
 	conn := client.Client(conf)
 	bot = &Bot{
 		Config: server,
-		conn: conn,
+		conn:   conn,
 	}
 
 	conn.HandleFunc("connected", bot.connected)

@@ -18,8 +18,8 @@ func New() *ConfigFile {
 	return &ConfigFile{
 		make(map[string]*Server),
 		make(map[string]*Channel),
-		}
 	}
+}
 
 func (conf *ConfigFile) Parse() *Config {
 	parsed := &Config{make(map[string]*Server)}

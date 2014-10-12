@@ -1,11 +1,11 @@
 package config
 
 type Server struct {
-	Name string `json:"-"`
-	Connection *Connection `json:"connection"`
-	Login      *Login      `json:"login"`
-	Messages   *Messages   `json:"messages"`
-	Channels map[string]*Channel `json:"-"`
+	Name       string              `json:"-"`
+	Connection *Connection         `json:"connection"`
+	Login      *Login              `json:"login"`
+	Messages   *Messages           `json:"messages"`
+	Channels   map[string]*Channel `json:"-"`
 }
 
 type Connection struct {
