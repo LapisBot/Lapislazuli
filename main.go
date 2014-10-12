@@ -96,8 +96,9 @@ func loadConfigFile(path string) (conf *config.Config) {
 		server.Connection.Address = "irc.example.com:6697"
 		server.Connection.SSL = true
 		configFile.Servers["example"] = server
-
 		configFile.Channels["example:#example"] = config.NewChannel()
+
+		configFile.HTTP.Bind = ":8084"
 
 		// Write the default configuration to the file
 		require(config.Write(file, configFile))

@@ -8,6 +8,7 @@ import (
 type ConfigFile struct {
 	Servers  map[string]*Server  `json:"servers"`
 	Channels map[string]*Channel `json:"channels"`
+	HTTP     *HTTP               `json:"http"`
 }
 
 type Config struct {
@@ -18,6 +19,7 @@ func New() *ConfigFile {
 	return &ConfigFile{
 		make(map[string]*Server),
 		make(map[string]*Channel),
+		new(HTTP),
 	}
 }
 
