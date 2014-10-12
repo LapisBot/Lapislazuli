@@ -90,17 +90,17 @@ func loadConfigFile(path string) (conf *config.Config) {
 		defer file.Close()
 
 		// Default values
-		conf = config.New()
+		configFile := config.New()
 
-		server := config.NewServer()
+		server := config.NewServer("example")
 		server.Connection.Address = "irc.example.com:6697"
 		server.Connection.SSL = true
-		conf.Servers["example"] = server
+		configFile.Servers["example"] = server
 
-		conf.Channels["example:#example"] = config.NewChannel()
+		configFile.Channels["example:#example"] = config.NewChannel()
 
 		// Write the default configuration to the file
-		require(config.Write(file, conf))
+		require(config.Write(file, configFile))
 
 		return nil
 	} else {
@@ -108,7 +108,7 @@ func loadConfigFile(path string) (conf *config.Config) {
 		defer file.Close()
 
 		// Read the configuration from the file
-		conf, err = config.Read(file)
+		conf, err = config.Parse(file)
 		require(err)
 	}
 

@@ -1,9 +1,11 @@
 package config
 
 type Server struct {
+	Name string `json:"-"`
 	Connection *Connection `json:"connection"`
 	Login      *Login      `json:"login"`
 	Messages   *Messages   `json:"messages"`
+	Channels map[string]*Channel `json:"-"`
 }
 
 type Connection struct {
@@ -30,8 +32,9 @@ type Messages struct {
 	Quit    string `json:"quit"`
 }
 
-func NewServer() *Server {
+func NewServer(name string) *Server {
 	return &Server{
+		name,
 		&Connection{
 			SSL:         false,
 			Certificate: true,
@@ -40,5 +43,6 @@ func NewServer() *Server {
 			NickServ: &NickServ{},
 		},
 		&Messages{},
+		nil,
 	}
 }

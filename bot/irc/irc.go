@@ -9,6 +9,7 @@ import (
 )
 
 type Bot struct {
+	Config *config.Server
 	conn *client.Conn
 	quit chan struct{}
 }
@@ -37,7 +38,11 @@ func Create(server *config.Server) (bot *Bot) {
 	}
 
 	conn := client.Client(conf)
-	bot = &Bot{conn: conn}
+	bot = &Bot{
+		Config: server,
+		conn: conn,
+	}
+
 	conn.HandleFunc("connected", bot.connected)
 	conn.HandleFunc("disconnected", bot.disconnected)
 	return
@@ -55,7 +60,9 @@ func (irc *Bot) Disconnect() {
 }
 
 func (irc *Bot) connected(conn *client.Conn, _ *client.Line) {
-	conn.Join("#lapislazuli") // TODO
+	for channel, _ := range irc.Config.Channels {
+		conn.Join(channel)
+	}
 }
 
 func (irc *Bot) disconnected(_ *client.Conn, _ *client.Line) {
