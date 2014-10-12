@@ -10,6 +10,7 @@ type Server struct {
 
 type Connection struct {
 	Address     string `json:"address"`
+	Bind        string `json:"bind"`
 	SSL         bool   `json:"ssl"`
 	Certificate bool   `json:"certificate"`
 }
