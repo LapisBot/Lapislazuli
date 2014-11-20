@@ -26,7 +26,7 @@ func main() {
 	assert(err)
 	flag.StringVar(&dir, "dir", dir, "Set the folder for all the Bot files")
 
-	configFile := "config.json"
+	configFile := "lapislazuli.json"
 	flag.StringVar(&configFile, "config", configFile, "The file to load the configuration from")
 
 	// Parse the flags given when running the application
