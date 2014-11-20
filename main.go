@@ -2,40 +2,44 @@ package main
 
 import (
 	"bufio"
-	"flag"
 	"fmt"
 	"github.com/LapisBot/Lapislazuli/bot"
+	"github.com/LapisBot/Lapislazuli/cli"
 	"github.com/LapisBot/Lapislazuli/config"
+	"github.com/ogier/pflag"
 	"os"
 	"os/signal"
 	"path/filepath"
 )
 
-func main() {
-	flag.Usage = func() {
-		fmt.Fprintln(os.Stderr, "Available flags:")
+const (
+	configName = "lapislazuli.json"
+)
 
-		// Print defaults
-		flag.CommandLine.VisitAll(func(f *flag.Flag) {
-			fmt.Fprintf(os.Stderr, "  -%s | %s - (%s)\n", f.Name, f.Usage, f.DefValue)
-		})
+func Run(name string, args []string) int {
+	flags := pflag.NewFlagSet(name, pflag.ContinueOnError)
+
+	dir := flags.StringP("dir", "d", ".", "The folder to save all files in.")
+	config := flags.StringP("config", "c", configName, "The configuration file used to configure the bot.")
+
+	cli.FlagUsage(name, flags)
+
+	if len(args) >= 1 && args[0] == "help" {
+		flags.Usage()
+		return 1
 	}
 
-	// The folder to save the Bot files in
-	dir, err := os.Getwd()
-	assert(err)
-	flag.StringVar(&dir, "dir", dir, "Set the folder for all the Bot files")
+	if flags.Parse(args) != nil {
+		return 1
+	}
 
-	configFile := "lapislazuli.json"
-	flag.StringVar(&configFile, "config", configFile, "The file to load the configuration from")
+	if *dir != "." && filepath.Dir(*config) == "." {
+		*config = filepath.Join(*dir, *config)
+	}
 
-	// Parse the flags given when running the application
-	flag.Parse()
-
-	// We have the parsed flags available now, load the configuration
-	configFile = filepath.Join(dir, configFile)
-	fmt.Println("Loading configuration from", configFile)
-	conf := loadConfigFile(configFile)
+	// Load the configuration
+	fmt.Println("Loading configuration from:", *config)
+	conf := loadConfigFile(*config)
 	if conf == nil {
 		os.Exit(0)
 	}
@@ -59,6 +63,12 @@ func main() {
 		line = line[:len(line)-1]
 		fmt.Println(line)
 	}
+
+	return 0
+}
+
+func main() {
+	os.Exit(Run(filepath.Base(os.Args[0]), os.Args[1:]))
 }
 
 // This method should always complete successfully. If it doesn't, then something is really wrong and we
