@@ -9,6 +9,7 @@ import (
 
 const Name = "Lapislazuli v0.1dev"
 
+type Bot struct {f
 type Bot struct {
 	Config *config.Config
 	irc    map[string]*irc.Bot

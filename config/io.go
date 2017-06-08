@@ -19,6 +19,8 @@ func Read(reader io.Reader) (conf *ConfigFile, err error) {
 	return
 }
 
+func Write(writer io.Writer, conf *Config) (err error) {
+	// We can't use the encoder here becaus
 func Write(writer io.Writer, conf *ConfigFile) (err error) {
 	// We can't use the encoder here because it is not able to print indented
 	result, err := json.MarshalIndent(conf, "", "    ")
