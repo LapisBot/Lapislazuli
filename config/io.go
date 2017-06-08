@@ -12,9 +12,4 @@ func Read(reader io.Reader) (conf *Config, err error) {
 }
 
 func Write(writer io.Writer, conf *Config) (err error) {
-	// We can't use the encoder here because it is not able to print indented
-	result, err := json.MarshalIndent(conf, "", "  "); if err != nil { return }
-	_, err = writer.Write(result); if err != nil { return }
-	_, err = io.WriteString(writer, "\n")
-	return
-}
+	// We can't use the encoder here becaus

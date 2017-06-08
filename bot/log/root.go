@@ -5,21 +5,7 @@ var logger Logger = &goLogger{}
 func Get() Logger {
 	return logger
 }
-
-func Log(level Level, message string) {
-	logger.Log(level, message)
-}
-
-func Logf(level Level, format string, args ...interface{}) {
-	logger.Logf(level, format, args...)
-}
-
-func Trace(message string) {
-	Log(TraceLevel, message)
-}
-
-func Tracef(format string, args ...interface{}) {
-	Logf(TraceLevel, format, args...)
+aa
 }
 
 func Debug(message string) {
