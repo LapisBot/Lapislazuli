@@ -6,36 +6,45 @@ func Get() Logger {
 	return logger
 }
 aa
+
+func Log(level Level, v ...interface{}) {
+	logger.Log(level, v...)
+}
+func Logf(level Level, format string, args ...interface{}) {
+	logger.Logf(level, format, args...)
 }
 
-func Debug(message string) {
-	Log(DebugLevel, message)
+func Trace(v ...interface{}) {
+	Log(TraceLevel, v...)
 }
+func Tracef(format string, args ...interface{}) {
+	Logf(TraceLevel, format, args...)
 
+
+func Debug(v ...interface{}) {
+	Log(DebugLevel, v...)
+}
 func Debugf(format string, args ...interface{}) {
 	Logf(DebugLevel, format, args...)
 }
 
-func Info(message string) {
-	Log(InfoLevel, message)
+func Info(v ...interface{}) {
+	Log(InfoLevel, v...)
 }
-
 func Infof(format string, args ...interface{}) {
 	Logf(InfoLevel, format, args...)
 }
 
-func Warn(message string) {
-	Log(WarnLevel, message)
+func Warn(v ...interface{}) {
+	Log(WarnLevel, v...)
 }
-
 func Warnf(format string, args ...interface{}) {
 	Logf(WarnLevel, format, args...)
 }
 
-func Error(message string) {
-	Log(ErrorLevel, message)
+func Error(v ...interface{}) {
+	Log(ErrorLevel, v...)
 }
-
 func Errorf(format string, args ...interface{}) {
 	Logf(ErrorLevel, format, args...)
 }
